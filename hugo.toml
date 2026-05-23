@@ -1,0 +1,4 @@
+baseURL = 'https://kukudely.github.io/kukudewo-pages/'
+locale = 'en-us'
+title = 'My New Hugo Project'
+theme = 'PaperMod'
