@@ -6,6 +6,13 @@
       <time>{{ .Date.Format "2006-01-02" }}</time>
     </header>
     <div class="content">{{ .Content }}</div>
+    {{ with .Params.tags }}
+    <div class="tags">
+      {{ range . }}
+      <a class="tag" href="{{ "/tags/" | relURL }}{{ . | urlize }}">{{ . }}</a>
+      {{ end }}
+    </div>
+    {{ end }}
   </article>
   <a class="back" href="{{ .Site.BaseURL }}">← back</a>
 </div>
