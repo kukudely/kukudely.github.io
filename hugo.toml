@@ -1,4 +1,16 @@
 baseURL = 'https://kukudely.github.io/'
 locale = 'en-us'
-title = 'My New Hugo Project'
-theme = 'PaperMod'
+title = "Hao's Space"
+theme = 'hugo-theme-console'
+
+[params]
+  titleCutting = true
+  animateStyle = 'animated zoomIn fast'
+
+  [[params.navlinks]]
+  name = 'about/'
+  url = 'about/'
+
+  [[params.navlinks]]
+  name = 'posts/'
+  url = 'posts/'
