@@ -8,6 +8,7 @@
 .DS_Store
 
 # IDE
+.claude/
 .idea/
 .vscode/
 *.swp

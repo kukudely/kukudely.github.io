@@ -1,0 +1,4 @@
+name = "kukudely"
+license = "MIT"
+description = "A minimal personal theme"
+min_version = "0.90.0"

@@ -1,0 +1,21 @@
+{{ define "main" }}
+<div class="container home">
+  {{ with .Site.GetPage "/about" }}
+  <section class="intro">
+    <h1>{{ .Title }}</h1>
+    <div class="content">{{ .Content }}</div>
+  </section>
+  {{ end }}
+
+  <section class="posts">
+    <h2>Posts</h2>
+    {{ $pages := where .Site.RegularPages "Type" "posts" }}
+    {{ range $pages }}
+    <article class="post-item">
+      <time>{{ .Date.Format "2006-01-02" }}</time>
+      <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+    </article>
+    {{ end }}
+  </section>
+</div>
+{{ end }}

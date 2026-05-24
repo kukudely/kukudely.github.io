@@ -1,16 +1,15 @@
 baseURL = 'https://kukudely.github.io/'
 locale = 'en-us'
-title = "Hao's Space"
-theme = 'hugo-theme-console'
+title = "kukudely's Space"
+theme = 'kukudely'
 
-[params]
-  titleCutting = true
-  animateStyle = 'animated zoomIn fast'
+[menu]
+  [[menu.main]]
+  name = 'about'
+  url = '/about/'
+  weight = 1
 
-  [[params.navlinks]]
-  name = 'about/'
-  url = 'about/'
-
-  [[params.navlinks]]
-  name = 'posts/'
-  url = 'posts/'
+  [[menu.main]]
+  name = 'posts'
+  url = '/posts/'
+  weight = 2
