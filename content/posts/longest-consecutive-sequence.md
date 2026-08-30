@@ -67,36 +67,25 @@ tags = ["LeetCode", "算法", "哈希表", "Go"]
 
 ```go
 func longestConsecutive(nums []int) int {
-	set := make(map[int]struct{}, len(nums))
+	numSet := map[int]bool{}
 	for _, num := range nums {
-		set[num] = struct{}{}
+		numSet[num] = true
 	}
-
-	longest := 0
-
-	for num := range set {
-		// num - 1 存在时，num 已有前驱，直接跳过。
-		if _, exists := set[num-1]; exists {
-			continue
-		}
-
-		current := num
-		length := 1
-
-		for {
-			if _, exists := set[current+1]; !exists {
-				break
+	longestStreak := 0
+	for num := range numSet {
+		if !numSet[num-1] {
+			currentNum := num
+			currentStreak := 1
+			for numSet[currentNum+1] {
+				currentNum++
+				currentStreak++
 			}
-			current++
-			length++
-		}
-
-		if length > longest {
-			longest = length
+			if longestStreak < currentStreak {
+				longestStreak = currentStreak
+			}
 		}
 	}
-
-	return longest
+	return longestStreak
 }
 ```
 
