@@ -7,5 +7,33 @@
       <a href="{{ .URL }}">{{ .Name }}</a>
       {{ end }}
     </nav>
+    <button class="theme-toggle" type="button" aria-label="切换主题" title="切换主题">
+      <span class="theme-toggle-icon" aria-hidden="true"></span>
+      <span class="theme-toggle-label">light</span>
+    </button>
   </div>
 </header>
+
+<script>
+  (() => {
+    const root = document.documentElement;
+    const toggle = document.querySelector('.theme-toggle');
+    const label = toggle.querySelector('.theme-toggle-label');
+
+    const updateThemeControl = () => {
+      const isDark = root.dataset.theme === 'dark';
+      label.textContent = isDark ? 'dark' : 'light';
+      toggle.setAttribute('aria-pressed', String(isDark));
+      toggle.title = isDark ? '切换到浅色主题' : '切换到深色主题';
+    };
+
+    toggle.addEventListener('click', () => {
+      const nextTheme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+      root.dataset.theme = nextTheme;
+      localStorage.setItem('theme', nextTheme);
+      updateThemeControl();
+    });
+
+    updateThemeControl();
+  })();
+</script>
