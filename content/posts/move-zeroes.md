@@ -9,6 +9,8 @@ tags = ["LeetCode", "算法", "数组", "双指针", "Go"]
 
 [LeetCode 283：移动零](https://leetcode.cn/problems/move-zeroes/description/?envType=study-plan-v2&envId=top-100-liked)
 
+**难度：简单**
+
 给定一个数组 `nums`，将所有 `0` 移动到数组末尾，同时保持非零元素的相对顺序。
 
 要求在不复制数组的情况下原地完成操作。
