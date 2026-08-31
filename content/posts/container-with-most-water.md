@@ -9,6 +9,8 @@ tags = ["LeetCode", "算法", "数组", "双指针", "贪心", "Go"]
 
 [LeetCode 11：盛最多水的容器](https://leetcode.cn/problems/container-with-most-water/description/?envType=study-plan-v2&envId=top-100-liked)
 
+**难度：中等**
+
 给定一个长度为 `n` 的整数数组 `height`。数组中的第 `i` 个元素表示一条垂线的高度，这条垂线的两个端点分别是 `(i, 0)` 和 `(i, height[i])`。
 
 从中选择两条垂线，使它们与 `x` 轴共同构成一个容器，返回该容器可以储存的最大水量。容器不能倾斜。

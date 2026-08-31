@@ -9,6 +9,8 @@ tags = ["LeetCode", "算法", "哈希表", "Go"]
 
 [LeetCode 128：最长连续序列](https://leetcode.cn/problems/longest-consecutive-sequence/description/?envType=study-plan-v2&envId=top-100-like)
 
+**难度：中等**
+
 给定一个未排序的整数数组 `nums`，找出数字连续的最长序列的长度。序列中的元素不要求在原数组中连续。
 
 要求设计并实现时间复杂度为 `O(n)` 的算法。

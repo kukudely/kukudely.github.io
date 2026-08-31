@@ -9,6 +9,8 @@ tags = ["LeetCode", "算法", "数组", "双指针", "排序", "Go"]
 
 [LeetCode 15：三数之和](https://leetcode.cn/problems/3sum/?envType=study-plan-v2&envId=top-100-liked)
 
+**难度：中等**
+
 给定一个整数数组 `nums`，找出所有满足以下条件的三元组：
 
 - 三个元素来自不同的数组下标。
