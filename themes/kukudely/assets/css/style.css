@@ -101,7 +101,7 @@ a:focus-visible {
     border-radius: 2px;
 }
 
-header {
+.site-header {
     position: sticky;
     top: 0;
     z-index: 20;
@@ -464,6 +464,82 @@ main {
     flex-wrap: wrap;
     gap: 0.35rem;
     margin-top: 0.6rem;
+}
+
+.post-layout {
+    width: min(100%, 1160px);
+    display: grid;
+    grid-template-columns: minmax(0, 760px) minmax(0, 260px);
+    gap: 3rem;
+    align-items: start;
+}
+
+.post-main {
+    min-width: 0;
+}
+
+.post-sidebar {
+    border-left: 1px solid var(--border);
+    padding-left: 1.4rem;
+}
+
+.post-sidebar h2 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.post-sidebar h2 span {
+    color: var(--accent);
+}
+
+.post-sidebar-list {
+    list-style: none;
+}
+
+.post-sidebar-list li + li {
+    border-top: 1px solid var(--border);
+}
+
+.post-sidebar-list a {
+    display: block;
+    padding: 0.85rem 0.6rem;
+    color: var(--text);
+    text-decoration: none;
+    overflow-wrap: anywhere;
+    font-size: 0.85rem;
+    line-height: 1.6;
+}
+
+.post-sidebar-list time {
+    display: block;
+    margin-bottom: 0.25rem;
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 0.65rem;
+}
+
+.post-sidebar-list a:hover,
+.post-sidebar-list a[aria-current="page"] {
+    background: var(--accent-soft);
+    color: var(--accent);
+}
+
+.post-sidebar-list a[aria-current="page"] {
+    box-shadow: inset 2px 0 var(--accent);
+    font-weight: 700;
+}
+
+@media (max-width: 960px) {
+    .post-layout {
+        width: min(100%, var(--page-width));
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .post-sidebar {
+        border-left: 0;
+        border-top: 1px solid var(--border);
+        padding: 1.5rem 0 0;
+    }
 }
 
 .post-header {
