@@ -1,5 +1,6 @@
 {{ define "main" }}
-<div class="container">
+<div class="container{{ if eq .Section "posts" }} post-layout{{ end }}">
+  <div class="post-main">
   <article class="post">
     <header class="post-header">
       <h1>{{ .Title }}</h1>
@@ -15,5 +16,22 @@
     {{ end }}
   </article>
   <a class="back" href="{{ .Site.BaseURL }}">← back</a>
+  </div>
+  {{ if eq .Section "posts" }}
+  <aside class="post-sidebar" aria-labelledby="post-list-heading">
+    <h2 id="post-list-heading">Posts<span>.</span></h2>
+    <ul class="post-sidebar-list">
+      {{ $current := .RelPermalink }}
+      {{ range (where .Site.RegularPages "Section" "posts").ByDate.Reverse }}
+      <li>
+        <a href="{{ .RelPermalink }}"{{ if eq .RelPermalink $current }} aria-current="page"{{ end }}>
+          <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+          <span>{{ .Title }}</span>
+        </a>
+      </li>
+      {{ end }}
+    </ul>
+  </aside>
+  {{ end }}
 </div>
 {{ end }}
