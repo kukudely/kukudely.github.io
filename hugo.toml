@@ -1,4 +1,4 @@
-baseURL = 'https://kukudely.github.io/'
+baseURL = 'https://kukudely.cloud/'
 locale = 'en-us'
 title = "kukudely's Space"
 theme = 'kukudely'
