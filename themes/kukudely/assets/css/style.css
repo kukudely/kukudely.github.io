@@ -529,6 +529,71 @@ main {
     font-weight: 700;
 }
 
+.post-sidebar-with-toc {
+    position: sticky;
+    top: 6rem;
+    max-height: calc(100dvh - 7rem);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    padding-right: 0.5rem;
+}
+
+.post-toc-desktop {
+    margin-bottom: 1.8rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.post-toc-nav {
+    display: block;
+    font-family: var(--sans);
+}
+
+.post-toc-nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+.post-toc-nav ul ul {
+    margin-left: 0.65rem;
+    padding-left: 0.55rem;
+    border-left: 1px solid var(--border);
+}
+
+.post-toc-nav a {
+    display: block;
+    padding: 0.45rem 0.65rem;
+    border-radius: 3px;
+    font-size: 0.78rem;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+    text-transform: none;
+}
+
+.post-toc-nav a::before,
+.post-toc-nav a::after {
+    content: none;
+}
+
+.post-toc-nav ul ul a {
+    font-size: 0.72rem;
+}
+
+.post-toc-nav a:hover,
+.post-toc-nav a[aria-current="location"] {
+    color: var(--accent);
+    background: var(--accent-soft);
+}
+
+.post-toc-nav a[aria-current="location"] {
+    box-shadow: inset 2px 0 var(--accent);
+    font-weight: 650;
+}
+
+.post-toc-mobile {
+    display: none;
+}
+
 @media (max-width: 960px) {
     .post-layout {
         width: min(100%, var(--page-width));
@@ -539,6 +604,56 @@ main {
         border-left: 0;
         border-top: 1px solid var(--border);
         padding: 1.5rem 0 0;
+    }
+
+    .post-sidebar-with-toc {
+        position: static;
+        max-height: none;
+        overflow: visible;
+    }
+
+    .post-toc-desktop {
+        display: none;
+    }
+
+    .post-toc-mobile {
+        display: block;
+        margin: 0 0 2rem;
+        padding: 0.85rem 1rem;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        background: var(--surface);
+    }
+
+    .post-toc-mobile summary {
+        cursor: pointer;
+        color: var(--heading-soft);
+        font-size: 0.85rem;
+        font-weight: 650;
+    }
+
+    .post-toc-mobile summary span {
+        float: right;
+        color: var(--muted);
+        font-size: 0.72rem;
+        font-weight: 400;
+    }
+
+    .post-toc-mobile summary:focus-visible {
+        outline: 2px solid var(--signal);
+        outline-offset: 4px;
+    }
+
+    .post-toc-mobile .post-toc-nav {
+        margin-top: 0.8rem;
+        max-height: 55vh;
+        overflow-y: auto;
+    }
+}
+
+@media (max-width: 460px) {
+    .post .content :is(h2, h3, h4) {
+        scroll-margin-top: 10rem;
     }
 }
 
