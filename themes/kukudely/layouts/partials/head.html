@@ -12,5 +12,10 @@
 
 {{ $style := resources.Get "css/style.css" | minify | fingerprint }}
 <link rel="stylesheet" href="{{ $style.RelPermalink }}">
+{{ if .IsHome }}
+<link rel="stylesheet" href="{{ "fonts/fonts.css" | relURL }}">
+{{ $homeStyle := resources.Get "css/home.css" | minify | fingerprint }}
+<link rel="stylesheet" href="{{ $homeStyle.RelPermalink }}">
+{{ end }}
 
 <link rel="alternate" type="application/rss+xml" href="{{ .Site.BaseURL }}index.xml" title="{{ .Site.Title }}">

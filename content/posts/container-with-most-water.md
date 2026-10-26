@@ -1,5 +1,6 @@
 +++
 title = "LeetCode 11：盛最多水的容器"
+description = "从容器的短板出发，理解双指针为什么可以缩小搜索范围。"
 date = '2026-08-31T10:11:25+08:00'
 draft = false
 tags = ["LeetCode", "算法", "数组", "双指针", "贪心", "Go"]

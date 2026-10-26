@@ -1,30 +1,78 @@
 {{ define "main" }}
-<div class="container home">
-  {{ with .Site.GetPage "/about" }}
-  <section class="intro">
-    <h1>{{ .Title }}</h1>
-    <div class="content">{{ .Content }}</div>
-  </section>
+{{ $posts := (where .Site.RegularPages "Section" "posts").ByDate.Reverse }}
+{{ $topics := slice }}
+{{ range .Site.Taxonomies.tags.Alphabetical }}
+  {{ $articles := intersect .Pages $posts }}
+  {{ if $articles }}
+    {{ $latest := index (sort $articles "Date" "desc") 0 }}
+    {{ $rank := printf "%010d-%012d-%s" (len $articles) $latest.Date.Unix .Page.Title }}
+    {{ $topics = $topics | append (dict "Name" .Page.Title "URL" .Page.RelPermalink "Count" (len $articles) "Pages" $articles "Rank" $rank) }}
   {{ end }}
-
-  <section class="posts">
-    <h2>Posts</h2>
-    {{ $pages := where .Site.RegularPages "Type" "posts" }}
-    {{ range $pages }}
-    <article class="post-item">
-      <time>{{ .Date.Format "2006-01-02" }}</time>
-      <div>
-        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-        {{ with .Params.tags }}
-        <span class="post-tags">
-          {{ range . }}
-          <a class="tag" href="{{ "/tags/" | relURL }}{{ . | urlize }}">{{ . }}</a>
-          {{ end }}
-        </span>
-        {{ end }}
-      </div>
-    </article>
-    {{ end }}
+{{ end }}
+{{ $topics = sort $topics "Rank" "desc" }}
+<div class="container garden">
+  <section class="garden-hero" aria-labelledby="intro-title">
+    <div class="garden-intro">
+      <p class="eyebrow">Learn / Build / Share</p>
+      <h1 id="intro-title">Hi, I'm kukudely<span>.</span></h1>
+      <p class="garden-lead">记录学习、构建与思考。<br>把遇到的问题，写成可以回看的笔记。</p>
+      <a class="garden-link" href="{{ "posts/" | relURL }}">浏览文章 <span aria-hidden="true">↗</span></a>
+    </div>
+    {{ partial "knowledge-map.html" (dict "Topics" $topics "Excluded" (.Site.Params.home.graphExcludeTags | default slice)) }}
   </section>
+  <section class="garden-overview" aria-label="笔记概览">
+    <h2>笔记概览</h2>
+    <span data-stat="posts" data-count="{{ len $posts }}"><strong>{{ len $posts }}</strong> 篇文章</span>
+    <a href="{{ "tags/" | relURL }}" data-stat="topics" data-count="{{ len $topics }}"><strong>{{ len $topics }}</strong> 个主题</a>
+    <p>记录学习、实践与思考</p>
+  </section>
+  <div class="garden-columns">
+    <section class="garden-posts" aria-labelledby="latest-heading">
+      <div class="garden-section-heading">
+        <h2 id="latest-heading">最新文章 <span>Latest notes</span></h2>
+        <a class="garden-link" href="{{ "posts/" | relURL }}">全部文章 <span aria-hidden="true">↗</span></a>
+      </div>
+      {{ range first 7 $posts }}
+      <article class="garden-post">
+        <div class="garden-post-heading">
+          <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+          <time datetime="{{ .Date.Format "2006-01-02" }}" title="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "01.02" }}</time>
+          <span class="garden-post-arrow" aria-hidden="true">↗</span>
+        </div>
+        {{ with .Description }}<p class="garden-post-summary">{{ . }}</p>{{ end }}
+        {{ $specific := slice }}
+        {{ range .GetTerms "tags" }}
+          {{ if not (in ($.Site.Params.home.graphExcludeTags | default slice) .Title) }}
+            {{ $specific = $specific | append . }}
+          {{ end }}
+        {{ end }}
+        {{ with first 3 $specific }}
+        <ul class="garden-post-topics" aria-label="文章主题">
+          {{ range . }}<li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>{{ end }}
+        </ul>
+        {{ end }}
+      </article>
+      {{ else }}
+      <p class="garden-empty">新的笔记正在路上。</p>
+      {{ end }}
+    </section>
+    <aside class="garden-sidebar" aria-labelledby="topics-heading">
+      <div class="garden-section-heading"><h2 id="topics-heading">探索主题 <span>Topics</span></h2></div>
+      <ul class="garden-topic-list">
+        {{ range first 8 $topics }}
+        <li><a href="{{ .URL }}"><span>{{ .Name }}</span><span class="garden-topic-count">{{ printf "%02d" .Count }}</span></a></li>
+        {{ end }}
+      </ul>
+      {{ if gt (len $topics) 8 }}<a class="garden-all-topics" href="{{ "tags/" | relURL }}">全部主题 ↗</a>{{ end }}
+      <div class="garden-signature">
+        <svg viewBox="0 0 260 90" fill="none" aria-hidden="true">
+          <path d="M25 48 C75 80 125 -8 233 51" />
+          <circle cx="25" cy="48" r="17" /><circle cx="125" cy="30" r="25" /><circle cx="233" cy="51" r="16" />
+          <circle class="seed seed-amber" cx="25" cy="48" r="6" /><circle class="seed" cx="125" cy="30" r="9" /><circle class="seed seed-muted" cx="233" cy="51" r="5" />
+        </svg>
+        <p>一篇一记，连接知识。</p><span>Read · Build · Think</span>
+      </div>
+    </aside>
+  </div>
 </div>
 {{ end }}

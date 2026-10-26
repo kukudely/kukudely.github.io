@@ -1,0 +1,36 @@
+{{ $selected := slice }}
+{{ range .Topics }}
+  {{ if not (in $.Excluded .Name) }}{{ $selected = $selected | append . }}{{ end }}
+{{ end }}
+{{ $selected = first 6 $selected }}
+{{ $positions := slice (dict "X" 245 "Y" 145) (dict "X" 110 "Y" 70) (dict "X" 395 "Y" 50) (dict "X" 405 "Y" 225) (dict "X" 120 "Y" 245) (dict "X" 285 "Y" 285) }}
+<div class="knowledge-map" role="group" aria-labelledby="map-title">
+  <h2 id="map-title" class="map-title">知识星图 <span>Knowledge map</span></h2>
+  <div class="map-canvas">
+    <svg class="map-lines" viewBox="0 0 500 330" fill="none" aria-hidden="true">
+      <ellipse class="map-orbit" cx="250" cy="165" rx="224" ry="135" transform="rotate(-12 250 165)" />
+      {{ range $i, $topic := $selected }}
+        {{ $from := index $positions $i }}
+        {{ range $j, $other := $selected }}
+          {{ if and (gt $j $i) (intersect $topic.Pages $other.Pages) }}
+            {{ $to := index $positions $j }}
+            <path data-from="{{ $topic.Name }}" data-to="{{ $other.Name }}" d="M {{ $from.X }} {{ $from.Y }} Q 250 165 {{ $to.X }} {{ $to.Y }}" />
+          {{ end }}
+        {{ end }}
+      {{ end }}
+    </svg>
+    {{ range $i, $topic := $selected }}
+      {{ $position := index $positions $i }}
+      {{ $latest := index (sort $topic.Pages "Date" "desc") 0 }}
+      <a class="map-node{{ if eq $i 0 }} map-node-primary{{ end }}" data-topic="{{ $topic.Name }}" href="{{ $topic.URL }}"
+         style="--x: {{ div (float $position.X) 5 }}%; --y: {{ div (float $position.Y) 3.3 }}%; --node-size: {{ add 10 (mul (math.Min $topic.Count 10) 2) }}px;"
+         aria-label="{{ $topic.Name }}，{{ $topic.Count }} 篇文章；最近：{{ $latest.Title }}"
+         title="{{ $topic.Name }} · {{ $topic.Count }} 篇文章&#10;最近：{{ $latest.Title }}">
+        <span class="map-dot" aria-hidden="true"></span><span class="map-label">{{ $topic.Name }}</span>
+      </a>
+    {{ else }}
+      <p class="map-empty">从第一篇笔记开始，<br>连接新的知识。</p>
+    {{ end }}
+  </div>
+  <p class="map-caption"><span>Connecting the dots</span>主题随笔记生长，连线记录共同出现</p>
+</div>

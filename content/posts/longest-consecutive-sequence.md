@@ -1,5 +1,6 @@
 +++
 title = "LeetCode 128：最长连续序列"
+description = "借助哈希表，从连续序列的起点出发避免重复遍历。"
 date = '2026-08-30T00:00:00+08:00'
 draft = false
 tags = ["LeetCode", "算法", "哈希表", "Go"]

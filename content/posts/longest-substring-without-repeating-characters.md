@@ -1,5 +1,6 @@
 +++
 title = "LeetCode 3：无重复字符的最长子串"
+description = "用滑动窗口维护无重复区间，理解左右边界的移动。"
 date = '2026-09-06T16:07:58+08:00'
 draft = false
 tags = ["LeetCode", "算法", "字符串", "滑动窗口", "哈希表", "Go"]

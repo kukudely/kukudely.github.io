@@ -1,5 +1,6 @@
 +++
 title = "LeetCode 42：接雨水"
+description = "从动态规划到双指针，比较两种解法的思考路径。"
 date = '2026-09-06T14:33:16+08:00'
 draft = false
 tags = ["LeetCode", "算法", "数组", "动态规划", "双指针", "Go"]

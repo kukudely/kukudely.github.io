@@ -1,5 +1,6 @@
 +++
 title = "LeetCode 15：三数之和"
+description = "排序之后，利用双指针与去重寻找所有满足条件的组合。"
 date = '2026-08-31T22:17:38+08:00'
 draft = false
 tags = ["LeetCode", "算法", "数组", "双指针", "排序", "Go"]

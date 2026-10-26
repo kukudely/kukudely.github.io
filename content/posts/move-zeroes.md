@@ -1,5 +1,6 @@
 +++
 title = "LeetCode 283：移动零"
+description = "利用双指针原地移动元素，保留非零元素的相对顺序。"
 date = '2026-08-30T21:33:26+08:00'
 draft = false
 tags = ["LeetCode", "算法", "数组", "双指针", "Go"]

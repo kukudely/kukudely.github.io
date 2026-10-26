@@ -3,6 +3,10 @@ locale = 'en-us'
 title = "kukudely's Space"
 theme = 'kukudely'
 
+[params.home]
+  # 宽泛的栏目标签保留在主题统计中，星图优先展示具体知识点。
+  graphExcludeTags = ['LeetCode', '算法']
+
 [menu]
   [[menu.main]]
   name = 'about'
