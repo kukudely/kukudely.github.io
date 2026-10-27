@@ -901,6 +901,113 @@ main {
     border-radius: 4px;
 }
 
+.content .mermaid-diagram {
+    max-width: 100%;
+    margin: 1.8rem 0;
+    padding: 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface);
+}
+
+.content .mermaid-canvas {
+    overflow-x: auto;
+}
+
+.content .mermaid-canvas > svg {
+    display: block;
+    width: var(--diagram-width);
+    max-width: 100%;
+    min-width: min(500px, var(--diagram-width));
+    height: auto;
+    margin-inline: auto;
+}
+
+.mermaid-canvas .node rect,
+.mermaid-dialog-canvas .node rect {
+    rx: 10px;
+    ry: 10px;
+}
+
+.mermaid-toolbar {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.4rem;
+    margin-bottom: 0.45rem;
+}
+
+.mermaid-expand,
+.mermaid-dialog .mermaid-toolbar button {
+    padding: 0.25rem 0.65rem;
+    border: 1px solid var(--border-bright);
+    border-radius: 4px;
+    background: var(--surface);
+    color: var(--muted);
+    font: inherit;
+    font-size: 0.75rem;
+    cursor: pointer;
+}
+
+.mermaid-expand:hover,
+.mermaid-dialog .mermaid-toolbar button:hover {
+    color: var(--text);
+    background: var(--surface-hover);
+}
+
+.mermaid-expand:focus-visible,
+.mermaid-dialog .mermaid-toolbar button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+.mermaid-dialog {
+    margin: auto;
+    width: min(1100px, calc(100vw - 2rem));
+    max-width: calc(100vw - 2rem);
+    max-height: 92dvh;
+    padding: 1rem;
+    border: 1px solid var(--border-bright);
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--text);
+}
+
+.mermaid-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.65);
+}
+
+.mermaid-dialog-canvas {
+    max-height: calc(92dvh - 5rem);
+    overflow: auto;
+}
+
+.mermaid-dialog-canvas > svg {
+    display: block;
+    width: var(--diagram-width);
+    max-width: none;
+    height: auto;
+    margin-inline: auto;
+}
+
+.content pre.mermaid-source {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--text);
+    box-shadow: none;
+}
+
+.content pre.mermaid-source::before,
+.content pre.mermaid-source::after {
+    display: none;
+}
+
+.content .mermaid-notice {
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
 .content hr {
     height: 1px;
     margin: 3rem 0;

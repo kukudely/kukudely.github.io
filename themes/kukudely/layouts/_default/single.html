@@ -52,4 +52,8 @@
 {{ $tocScript := resources.Get "js/post-toc.js" | minify | fingerprint }}
 <script src="{{ $tocScript.RelPermalink }}" defer></script>
 {{ end }}
+{{ if .Store.Get "hasMermaid" }}
+{{ $mermaidScript := resources.Get "js/mermaid.js" | minify | fingerprint }}
+<script type="module" src="{{ $mermaidScript.RelPermalink }}"></script>
+{{ end }}
 {{ end }}

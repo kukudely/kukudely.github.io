@@ -139,12 +139,22 @@ Codex 会在采样之前检查预算，也会在工具结果进入历史、准�
 
 Codex 的自动压缩流程会根据功能模式和 provider 能力选择不同路径。主要分支可以概括为：
 
-```text
-需要压缩或切换窗口
-  ├─ 启用 TokenBudget → 进入新窗口流程，跳过摘要生成
-  ├─ provider 支持远端 V2 → 请求服务端生成压缩条目
-  └─ 其他情况 → 客户端组织模型调用，生成文本摘要
+```mermaid
+flowchart TD
+    accTitle: Codex 上下文窗口切换流程
+    accDescr: 预算触发后，按功能模式和服务能力选择新窗口、远端压缩或文本摘要，安装上下文并保存检查点。
+    A[预算检查：需要切换窗口]
+    A -->|启用 TokenBudget| B[直接开启新窗口]
+    A -->|否则，支持远端 V2| C[服务端压缩条目]
+    A -->|否则| D[模型文本摘要]
+    C --> E[校验并重建上下文]
+    D --> E
+    B --> F[安装上下文并保存检查点]
+    E --> F
+    F --> G[继续推理]
 ```
+
+*三条路径按功能模式和能力择一进入，具体触发条件与保留策略随配置变化。*
 
 分派入口位于 [run_auto_compact 所在的回合逻辑](https://github.com/openai/codex/blob/970111f6cb62cc02fe36a82ea7d71b37a2889c97/codex-rs/core/src/session/turn.rs)。
 
@@ -210,21 +220,29 @@ Codex 的自动压缩流程会根据功能模式和 provider 能力选择不同�
 
 同步压缩需要让后续推理等待。源码还提供了可选的异步压缩机制：先捕获历史快照，在后台生成候选结果，让前台继续推进。它要求启用 `AsyncCompaction`、未启用 `TokenBudget`，并且 provider 支持远端 V2；启动时还会检查其他运行条件。
 
-考虑这样一段时间线：
+下面的时间线展示了后台快照与前台新增内容的关系：
 
-```text
-t0  当前历史：A B C D
-t1  后台开始压缩 A B C D
-t2  工具返回新结果 E
-t3  用户追加要求 F
-t4  后台返回压缩候选 S
+```mermaid
+sequenceDiagram
+    accTitle: Codex 后台压缩与新增消息的合并
+    accDescr: 后台压缩前缀 A B C D 时前台继续追加 E F。候选通过校验后，安装压缩前缀 S 加新增尾部 E F。
+    participant F as 前台执行
+    participant B as 后台压缩
+    participant H as 有效历史
+    F->>B: 捕获前缀 A B C D
+    activate B
+    F->>H: 追加工具结果 E、用户要求 F
+    B-->>F: 返回压缩候选
+    deactivate B
+    F->>H: 校验前缀、历史代际与兼容性
+    alt 候选仍适用
+        F->>H: 安装 S + E F
+    else 候选已失效
+        Note over F,H: 放弃候选，重新判断预算
+    end
 ```
 
-采用结果时，新的历史需要保留 `E F`：
-
-```text
-S 所代表的压缩后前缀 + E F
-```
+*S 表示压缩后重建的前缀，包含按策略保留的内容；E、F 是快照之后新增的消息。候选失效时不会直接覆盖当前历史。*
 
 如果直接用后台结果覆盖当前全部历史，新增工具结果和用户要求都会丢失。
 

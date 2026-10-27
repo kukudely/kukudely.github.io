@@ -1,0 +1,5 @@
+<div class="mermaid-diagram">
+  <div class="mermaid-toolbar"><button class="mermaid-expand" type="button" hidden>放大查看</button></div>
+  <div class="mermaid-canvas"><pre class="mermaid-source">{{ .Inner | htmlEscape | safeHTML }}</pre></div>
+</div>
+{{ .Page.Store.Set "hasMermaid" true }}
