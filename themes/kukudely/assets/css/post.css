@@ -1,4 +1,8 @@
 /* Article pages share a quiet reading hierarchy across all navigation sizes. */
+.post-page {
+    --page-width: 1280px;
+}
+
 .post-page .post-header::before,
 .post-page .post-header h1::after,
 .post-page .post-header time::before,
@@ -8,14 +12,14 @@
 }
 
 .post-page .post-layout {
-    width: min(100%, 1280px);
-    grid-template-columns: 212px minmax(0, 720px);
+    width: min(100%, var(--page-width));
+    grid-template-columns: 212px minmax(0, 1fr);
     gap: 2rem;
     padding-top: 2.8rem;
 }
 
 .post-page .post-layout.has-toc {
-    grid-template-columns: 212px minmax(0, 720px) 200px;
+    grid-template-columns: 212px minmax(0, 1fr) 200px;
 }
 
 .post-page .post-header {
@@ -109,10 +113,10 @@
 .post-page .post-nav-controls button[aria-expanded="true"] { background: transparent; }
 
 @media (max-width: 1359px) {
+    .post-page { --page-width: 1080px; }
     .post-page .post-layout,
     .post-page .post-layout.has-toc {
-        width: min(100%, 1080px);
-        grid-template-columns: minmax(0, 720px) 220px;
+        grid-template-columns: minmax(0, 1fr) 220px;
     }
     .post-page .post-navigation { border: 0; padding-left: 0.5rem; }
     .post-page .post-links,
@@ -120,9 +124,9 @@
 }
 
 @media (max-width: 960px) {
+    .post-page { --page-width: 880px; }
     .post-page .post-layout,
     .post-page .post-layout.has-toc {
-        width: min(100%, var(--page-width));
         grid-template-columns: minmax(0, 1fr);
         padding-top: 5rem;
     }
