@@ -1,19 +1,13 @@
 {{ define "main" }}
 {{ $toc := .TableOfContents }}
 {{ $hasTOC := and (eq .Section "posts") (strings.Contains $toc "<a href=") }}
-<div class="container{{ if eq .Section "posts" }} post-layout{{ end }}">
+<div class="container{{ if eq .Section "posts" }} post-layout{{ if $hasTOC }} has-toc{{ end }}{{ end }}">
   <div class="post-main">
   <article class="post">
     <header class="post-header">
       <h1>{{ .Title }}</h1>
       <time>{{ .Date.Format "2006-01-02" }}</time>
     </header>
-    {{ if $hasTOC }}
-    <details class="post-toc-mobile">
-      <summary>本文目录<span aria-hidden="true">展开 / 收起</span></summary>
-      {{ partial "post-toc.html" $toc }}
-    </details>
-    {{ end }}
     <div class="content">{{ .Content }}</div>
     {{ with .Params.tags }}
     <div class="tags">
@@ -26,28 +20,37 @@
   <a class="back" href="{{ .Site.BaseURL }}">← back</a>
   </div>
   {{ if eq .Section "posts" }}
-  <aside class="post-sidebar{{ if $hasTOC }} post-sidebar-with-toc{{ end }}" aria-label="文章导航">
+  <aside class="post-navigation" aria-label="文章导航" data-active="{{ if $hasTOC }}outline{{ else }}posts{{ end }}">
+    <div class="post-nav-controls" aria-label="切换文章导航">
+      {{ if $hasTOC }}<button type="button" id="outline-toggle" aria-controls="post-outline" data-panel="outline">本文目录</button>{{ end }}
+      <button type="button" id="posts-toggle" aria-controls="post-links" data-panel="posts">Posts</button>
+    </div>
     {{ if $hasTOC }}
-    <section class="post-toc-desktop" aria-labelledby="post-toc-heading">
-      <h2 id="post-toc-heading">本文目录<span>.</span></h2>
+    <section class="post-nav-panel post-outline" id="post-outline" aria-labelledby="post-toc-heading">
+      <h2 id="post-toc-heading">本文目录</h2>
       {{ partial "post-toc.html" $toc }}
     </section>
     {{ end }}
-    <h2 id="post-list-heading">Posts<span>.</span></h2>
+    <section class="post-nav-panel post-links" id="post-links" aria-labelledby="post-list-heading">
+    <h2 id="post-list-heading">Posts</h2>
     <ul class="post-sidebar-list">
       {{ $current := .RelPermalink }}
       {{ range (where .Site.RegularPages "Section" "posts").ByDate.Reverse }}
       <li>
         <a href="{{ .RelPermalink }}"{{ if eq .RelPermalink $current }} aria-current="page"{{ end }}>
-          <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
           <span>{{ .Title }}</span>
         </a>
       </li>
       {{ end }}
     </ul>
+    </section>
   </aside>
   {{ end }}
 </div>
+{{ if eq .Section "posts" }}
+{{ $navigationScript := resources.Get "js/post-navigation.js" | minify | fingerprint }}
+<script src="{{ $navigationScript.RelPermalink }}" defer></script>
+{{ end }}
 {{ if $hasTOC }}
 {{ $tocScript := resources.Get "js/post-toc.js" | minify | fingerprint }}
 <script src="{{ $tocScript.RelPermalink }}" defer></script>

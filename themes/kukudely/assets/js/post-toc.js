@@ -10,7 +10,9 @@
 
   function update() {
     pending = false;
-    const offset = (header ? header.getBoundingClientRect().height : 0) + 40;
+    const controls = document.querySelector('.post-nav-controls');
+    const toolbarHeight = matchMedia('(max-width: 960px)').matches && controls ? controls.getBoundingClientRect().height : 0;
+    const offset = (header ? header.getBoundingClientRect().height : 0) + toolbarHeight + 40;
     let current = headings[0];
     for (const heading of headings) {
       if (heading.getBoundingClientRect().top > offset) break;
@@ -30,9 +32,6 @@
     requestAnimationFrame(update);
   }
 
-  document.querySelector('.post-toc-mobile').addEventListener('click', event => {
-    if (event.target.closest('a')) event.currentTarget.open = false;
-  });
   window.addEventListener('scroll', scheduleUpdate, { passive: true });
   window.addEventListener('resize', scheduleUpdate);
   window.addEventListener('hashchange', scheduleUpdate);

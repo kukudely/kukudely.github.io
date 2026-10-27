@@ -12,6 +12,10 @@
 
 {{ $style := resources.Get "css/style.css" | minify | fingerprint }}
 <link rel="stylesheet" href="{{ $style.RelPermalink }}">
+{{ if and .IsPage (eq .Section "posts") }}
+{{ $postStyle := resources.Get "css/post.css" | minify | fingerprint }}
+<link rel="stylesheet" href="{{ $postStyle.RelPermalink }}">
+{{ end }}
 {{ if .IsHome }}
 <link rel="stylesheet" href="{{ "fonts/fonts.css" | relURL }}">
 {{ $homeStyle := resources.Get "css/home.css" | minify | fingerprint }}
