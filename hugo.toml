@@ -9,8 +9,8 @@ theme = 'kukudely'
   ordered = false
 
 [params.home]
-  # 宽泛的栏目标签保留在主题统计中，星图优先展示具体知识点。
-  graphExcludeTags = ['LeetCode', '算法']
+  # 宽泛栏目和问候标签保留在主题统计中，星图优先展示具体知识点。
+  graphExcludeTags = ['LeetCode', '算法', 'hello']
 
 [menu]
   [[menu.main]]

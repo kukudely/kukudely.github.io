@@ -1,12 +1,23 @@
 {{ define "main" }}
 {{ $posts := (where .Site.RegularPages "Section" "posts").ByDate.Reverse }}
+{{ $excluded := apply (.Site.Params.home.graphExcludeTags | default slice) "lower" "." }}
+{{ $primaryCounts := dict }}
+{{ range $posts }}
+  {{ range .GetTerms "tags" }}
+    {{ if not (in $excluded (lower .Title)) }}
+      {{ $primaryCounts = merge $primaryCounts (dict .Title (add (index $primaryCounts .Title | default 0) 1)) }}
+      {{ break }}
+    {{ end }}
+  {{ end }}
+{{ end }}
 {{ $topics := slice }}
 {{ range .Site.Taxonomies.tags.Alphabetical }}
   {{ $articles := intersect .Pages $posts }}
   {{ if $articles }}
     {{ $latest := index (sort $articles "Date" "desc") 0 }}
     {{ $rank := printf "%010d-%012d-%s" (len $articles) $latest.Date.Unix .Page.Title }}
-    {{ $topics = $topics | append (dict "Name" .Page.Title "URL" .Page.RelPermalink "Count" (len $articles) "Pages" $articles "Rank" $rank) }}
+    {{ $coverageRank := printf "%010d-%010d-%012d-%s" (len $articles) (index $primaryCounts .Page.Title | default 0) $latest.Date.Unix .Page.Title }}
+    {{ $topics = $topics | append (dict "Name" .Page.Title "URL" .Page.RelPermalink "Count" (len $articles) "Pages" $articles "Rank" $rank "CoverageRank" $coverageRank) }}
   {{ end }}
 {{ end }}
 {{ $topics = sort $topics "Rank" "desc" }}
@@ -18,7 +29,7 @@
       <p class="garden-lead">记录学习、构建与思考。<br>把遇到的问题，写成可以回看的笔记。</p>
       <a class="garden-link" href="{{ "posts/" | relURL }}">浏览文章 <span aria-hidden="true">↗</span></a>
     </div>
-    {{ partial "knowledge-map.html" (dict "Topics" $topics "Excluded" (.Site.Params.home.graphExcludeTags | default slice)) }}
+    {{ partial "knowledge-map.html" (dict "Topics" $topics "Posts" $posts "Excluded" $excluded) }}
   </section>
   <section class="garden-overview" aria-label="笔记概览">
     <h2>笔记概览</h2>
@@ -42,7 +53,7 @@
         {{ with .Description }}<p class="garden-post-summary">{{ . }}</p>{{ end }}
         {{ $specific := slice }}
         {{ range .GetTerms "tags" }}
-          {{ if not (in ($.Site.Params.home.graphExcludeTags | default slice) .Title) }}
+          {{ if not (in $excluded (lower .Title)) }}
             {{ $specific = $specific | append . }}
           {{ end }}
         {{ end }}
